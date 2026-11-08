@@ -10,6 +10,21 @@ dsh 自带的 Agent Teams 明确不支持「不同工作目录」和「跨进程
 
 ## 安装
 
+### 方式一：直接从 GitHub 安装（不需要 npm 账号）
+
+```bash
+dsh plugin --profile web add github:Nickxue1234/dsh-peer-messaging
+
+# 沙箱 / 容器里 pnpm store 不可写时，追加：
+#   --store-dir ~/.dsh/pnpm-store
+```
+
+一条命令从仓库拉 tarball 安装（实测约 13 秒），plugin-manager 会自动把 `dsh-peer-messaging` 写进 profile 的 `dsh.profile.bundles`。重启 `dsh web` 生效。
+
+> 走 git 源时 pnpm 会对 git 依赖跑 `prepare` 构建并默认拦截；本包**没有** `prepare` 脚本，因此直接通过。若个别环境仍提示 `allowBuilds`，按提示把 key 写进 profile 的 `pnpm-workspace.yaml` 再重跑即可。
+
+### 方式二：本地 `link:` 安装（开发用，改代码即时可见）
+
 ```bash
 cd /path/to/dsh-peer-messaging
 
@@ -18,10 +33,17 @@ pnpm install
 
 # 装进 web profile：只写 ~/.dsh/profiles/web/package.json + bundles，随之执行 profile 内 pnpm
 dsh plugin --profile web add link:$PWD
-
-# 重启 dsh web 后生效。若沙箱里 pnpm store 不可写，追加：
-#   --store-dir ~/.dsh/pnpm-store
 ```
+
+`link:` 版本改完代码要重启一次 `dsh web` 才加载（ESM 模块被进程缓存）。
+
+### 方式三：npm（包名已占，尚未发布）
+
+```bash
+dsh plugin --profile web add dsh-peer-messaging
+```
+
+npm 上一个无需 `--store-dir`、也无需 allowBuilds 授权的版本，适合给别人用。
 
 插件包声明了 `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }`，plugin-manager 在 install 后会自动把 `dsh-peer-messaging` 追加进 `dsh.profile.bundles` 并校验 patch，所以一条命令即可。
 

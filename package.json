@@ -1,7 +1,6 @@
 {
   "name": "dsh-peer-messaging",
   "version": "0.4.3",
-  "private": true,
   "description": "Cross-workspace, cross-process agent messaging for DeepSeek Harness: one agent can send text messages to agents living in other workspaces / dsh processes that share the same DSH_HOME.",
   "type": "module",
   "license": "MIT",
