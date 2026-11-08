@@ -1,0 +1,38 @@
+{
+  "name": "dsh-peer-messaging",
+  "version": "0.4.3",
+  "private": true,
+  "description": "Cross-workspace, cross-process agent messaging for DeepSeek Harness: one agent can send text messages to agents living in other workspaces / dsh processes that share the same DSH_HOME.",
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "package.json"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:watch": "node --test --watch test/*.test.js",
+    "install:web": "dsh plugin --profile web add link:$PWD",
+    "install:headless": "dsh plugin --profile headless add link:$PWD",
+    "smoke": "bash scripts/smoke.sh",
+    "verify:cross-process": "node scripts/cross-process-smoke.mjs",
+    "verify:schema": "node scripts/verify-schema.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.22.0"
+}

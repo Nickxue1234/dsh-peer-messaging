@@ -1,0 +1,27 @@
+# dsh-peer-messaging — bundle patch layer.
+#
+# Installed as a profile bundle, this row mounts the plugin in the dsh app
+# process (web, headless, tui, acp, ...). Every dsh process that shares the
+# same DSH_HOME joins the same peer bus, so agents can find and message agents
+# that live in other workspaces / other dsh processes.
+#
+# To override the defaults, target this id from your profile's own patch layer
+# (~/.dsh/profiles/<name>/cordis.patch.yml), which is applied after bundles:
+#
+#   - id: peer-messaging
+#     config:
+#       pollMs: 500
+#       heartbeatMs: 2000
+#       presenceTtlMs: 15000
+#       maxMessageBytes: 65536
+#       ackWaitMs: 900
+#       includeSubagentsInList: false
+#       includeColdInList: true          # list closed sessions too
+#       coldListTtlMs: 5000              # cache for that catalogue
+#       resumeColdTargets: true          # resume a closed recipient on send
+#       pairLimit: 10                    # per-pair flood guard (0 disables)
+#       pairWindowMs: 60000
+#       # stateDir: /absolute/shared/dir   # default: $DSH_HOME/peer-messaging
+- insert:
+    - id: peer-messaging
+      name: dsh-peer-messaging
